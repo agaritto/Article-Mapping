@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <title>Science Direct Crawling</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+<!-- 네비게이션바 -->
+
+<style type="text/css">
+    html, body, div {
+        margin: 0;
+        padding: 0;
+        border: 0
+    }
+
+    html {
+        font-size: 16px;
+    }
+
+    html, body {
+        width: 100%
+    }
+
+    body {
+        white-space: normal;
+    }
+
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="/logout">(로그아웃)</a>
+                    {% else %}
+                        <a class="nav-link" href="/login/">로그인</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

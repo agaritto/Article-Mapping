@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+<head>
+    <title>Science Direct Crawling</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+<style type="text/css">
+    html, body, div {
+        margin: 0;
+        padding: 0;
+        border: 0
+    }
+
+    html {
+        font-size: 16px;
+    }
+
+    html, body {
+        width: 100%
+    }
+
+    body {
+        white-space: normal;
+    }
+
+    #article {
+        height: 100vh;
+        position: absolute;
+        z-index: 3;
+        top: 0;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%
+    }
+
+    #back {
+        z-index: -1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 50vw;
+        min-width: 640px;
+        max-width: 800px;
+        height: 100vh;
+        opacity: 0.04
+    }
+
+    #main {
+        display: inline-block;
+        white-space: normal;
+        vertical-align: top;
+        width: 60vw;
+        min-width: 640px;
+        max-width: 900px;
+        height: 100vh;
+        flex: 1
+    }
+
+    #logo {
+        margin-top: 12vh;
+        text-align: center
+    }
+
+    #logo button {
+        cursor: pointer;
+        border: solid 1px darkred;
+        color: white;
+        font-size: max(24px, 1.88vw);
+        background: darkred;
+        border-radius: 0.4vw;
+        vertical-align: top;
+        height: 92%;
+        padding-right: 1%;
+    }
+
+    #logo a {
+        vertical-align: middle;
+        font-family: 'Courier Prime';
+        color: darkred;
+        font-size: min(max(35px, 7vw), 70px);
+        font-weight: bold;
+        white-space: nowrap
+    }
+
+    #enter {
+        width: 100%;
+        height: 11vh;
+        padding: 2vh 0 2vh 0;
+        text-align: center;
+        background: #eee
+    }
+
+    #enter textarea {
+        width: 60%;
+        height: 90%;
+        max-height: 90%;
+        border: solid 1px #ccc;
+        border-radius: 0.4vw;
+        text-align: center;
+        font-size: 1.33rem
+    }
+
+    #enter button {
+        cursor: pointer;
+        border: solid 1px darkred;
+        color: white;
+        font-size: max(24px, 1.88vw);
+        background: darkred;
+        border-radius: 0.4vw;
+        vertical-align: top;
+        height: 92%;
+        padding-right: 1%;
+    }
+
+    #enter button:hover {
+        background: firebrick;
+        border-color: firebrick
+    }
+
+    #enter button span {
+        display: inline-block;
+        vertical-align: middle;
+        text-align: left;
+        font-family: 'Mono';
+        max-height: 100%
+    }
+
+    #enter button span {
+        font-family: 'Courier Prime';
+    }
+
+    #motto {
+        font-family: 'Mono';
+        text-align: center;
+        width: 90%;
+        margin: 2vh 0 0 5%;
+        color: #aaa;
+        font-size: max(24px, 1.44vw);
+        white-space: normal;
+    }
+
+    #menu {
+        text-align: center;
+        margin: 6vh 5% 0 5%;
+        border-bottom: solid 1px #ddd
+    }
+
+    #menu a {
+        font-family: 'Courier Prime';
+        font-size: min(max(22px, 1.33vw), 24px);
+        text-decoration: none;
+        font-weight: bold;
+        color: #444;
+        display: inline-block;
+        margin-left: 1vw;
+        padding: 0.4vh 0.4vw 0.4vh 0.4vw;
+        border-radius: 0.4vw;
+        background: white
+    }
+
+    #menu a:hover {
+        background: #e8a202;
+        text-decoration: none;
+        color: white
+    }
+
+    #menu input[type=radio] {
+        display: none;
+    }
+
+    #tab-1:checked ~ .tab label:nth-child(1),
+    #tab-2:checked ~ .tab label:nth-child(2),
+    #tab-3:checked ~ .tab label:nth-child(3),
+    #tab-4:checked ~ .tab label:nth-child(4) {
+        background-color: rgba(139, 0, 0, 0.5);
+        box-shadow: none;
+    }
+
+    .content > div {
+        display: none;
+    }
+
+    #tab-1:checked ~ .content div:nth-child(1),
+    #tab-2:checked ~ .content div:nth-child(2),
+    #tab-3:checked ~ .content div:nth-child(3),
+    #tab-4:checked ~ .content div:nth-child(4) {
+        display: block;
+    }
+
+    .tab {
+        overflow: hidden;
+    }
+
+    .tab label {
+        font-size: 18px;
+        cursor: pointer;
+        float: left;
+        width: 25%;
+        text-align: center;
+        padding: 15px 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 2px;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .content {
+        background-color: rgba(139, 0, 0, 0.5);
+    }
+
+    .content > div {
+        padding: 30px;
+        line-height: 1.5;
+        font-size: 17px;
+    }
+
+    #article {
+        display: inline-block;
+        vertical-align: top;
+        width: 59vw;
+        background: #fafafa;
+        height: 100vh;
+        flex: 1;
+        flex-grow: 1;
+        overflow-y: auto
+    }
+
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="/logout">
+                            {{ user.username }} (로그아웃)
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="/login/">로그인</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="container">
+    <div id="main">
+        <div id="logo">
+            <a href="/">
+                science direct crawling
+            </a>
+
+        </div>
+        <form method="POST" action="/doi/">
+            {% csrf_token %}
+            <div id="enter">
+                <textarea placeholder="enter your DOI" autofocus="" name="request" id="request" spellcheck="false">
+
+                </textarea>
+                <button type="submit">
+                    <span>
+                        Crawl
+                    </span>
+                </button>
+            </div>
+        </form>
+        <div id="motto">
+            <span>
+
+            </span>
+        </div>
+        <div id="menu">
+            <input type="radio" id="tab-1" name="show" checked/>
+            <input type="radio" id="tab-2" name="show"/>
+            <input type="radio" id="tab-3" name="show"/>
+            <input type="radio" id="tab-4" name="show"/>
+            <div class="tab">
+                <label for="tab-1">DOI
+                </label>
+                <label for="tab-2">Crossref
+                </label>
+                <label for="tab-3">INTEXT CITATION</label>
+                <label for="tab-4">CHANGED OUTLINE</label>
+            </div>
+            <div class="content">
+                <div class="content-dis">
+
+                    {{ main_doi }}
+
+                </div>
+                <div class="content-dis">
+                    {% for l in reference_list%}
+                        {{ l }}
+                        <br>
+                    {% endfor %}
+                </div>
+                <div class="content-dis">
+                    {% for l in intext_citation%}
+                        {{ l }}
+                        <br>
+                    {% endfor %}
+                </div>
+                <div class="content-dis">
+
+                    {{ changed_ol }}
+
+                </div>
+            </div>
+        </div>
+        <div id="back">
+        </div>
+        <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+        <!-- 기본 템플릿 안에 삽입될 내용 End -->
+    </div>
+    <div id="article">
+{#        <iframe src="https://doi.org/10.1016/j.joi.2013.04.004"></iframe>#}
+        <iframe src={{ doi_temp }}></iframe>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <title>Science Direct Crawling</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+<div>
+
+        <a href="/">
+            <button>HOME</button>
+        </a>
+    <form method="POST" action="/nodeinput/">
+        {% csrf_token %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button>Create Node</button>
+        </div>
+    </form>
+    <form method="POST" action="/relationdb/">
+        {% csrf_token %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button>Create Relation Table</button>
+        </div>
+    </form>
+    <form method="POST" action="/relationinput/">
+        {% csrf_token %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button>Create Relation</button>
+        </div>
+    </form>
+    <div>
+        {% for l in article %}
+            {{ l }}
+            <br>
+        {% endfor %}
+    </div>
+    <div>
+        {% for text in comment %}
+            text
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
